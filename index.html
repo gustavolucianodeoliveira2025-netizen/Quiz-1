@@ -113,6 +113,7 @@
             font-size: 14px;
             animation: writeIn 0.5s ease forwards;
             white-space: pre-line;
+            word-break: break-word;
         }
 
         @keyframes writeIn {
@@ -199,6 +200,8 @@
             transition: all 0.2s ease;
             width: 100%;
             margin-bottom: 12px;
+            word-wrap: break-word;
+            white-space: normal;
         }
 
         .btn:hover:not(:disabled) { 
@@ -218,6 +221,7 @@
             padding: 4px 12px;
             border-radius: 30px;
             background-color: rgba(0,0,0,0.3);
+            white-space: nowrap;
         }
 
         .feedback-overlay {
@@ -310,22 +314,24 @@
         { q: "Qual dos números abaixo é divisível por 9?", options: ["45", "46", "47", "49"], correct: 0, time: 20 }
     ];
 
+    // Fórmulas de Ramanujan limpas de indexação problemática
     const ramanujanFormulas = [
-        "✨ Descoberto: 1729 = 1³ + 12³ = 9³ + 10³ (O menor número de Táxi!)",
-        "✨ Identidade de Ramanujan:\n1 + 2 + 3 + 4 + ... = -1/12 (Usada na Física Quântica!)",
-        "✨ Série Infinita para π:\n(2√2 / 9801) * ∑ (4k)!(1103+26390k) / (k!)^4 * 396^(4k)",
+        "✨ Descoberto: 1729 = 1³ + 12³ = 9³ + 10³\n(O menor número de Táxi!)",
+        "✨ Identidade de Ramanujan:\n1 + 2 + 3 + 4 + ... = -1/12\n(Usada na Física Quântica!)",
+        "✨ Série Infinita para pi:\n(2√2 / 9801) * SUM (4k)!(1103+26390k) / (k!)^4 * 396^(4k)",
         "✨ Fração Contínua Extraordinária:\n1 / (1 + e^(-2π) / (1 + e^(-4π) / ... ))",
         "✨ Teorema de Partição de Números:\np(5n + 4) é sempre divisível por 5.",
-        "✨ Função Teta de Ramanujan:\nf(a, b) = ∑ a^(n(n+1)/2) * b^(n(n-1)/2)",
+        "✨ Função Teta de Ramanujan:\nf(a, b) = SUM a^(n(n+1)/2) * b^(n(n-1)/2)",
         "✨ Outro Número de Táxi:\nTa(3) = 87539319 = 167³ + 436³",
-        "✨ Equação Modular Mágica:\nπ ≈ 22/7 (Famosa aproximação geométrica)",
-        "✨ Identidade Rogers-Ramanujan:\nG(q) = ∑ q^(n²) / (q;q)_n",
+        "✨ Equação Modular Mágica:\npi aprox. 22/7 (Famosa aproximação geométrica)",
+        "✨ Identidade Rogers-Ramanujan:\nG(q) = SUM q^(n²) / (q;q)_n",
         "✨ Conclusão Imperial: Parabéns, você desvendou a mente do mestre!"
     ];
 
     let questions = [];
     let currentQuestionIndex = 0;
     let score = 0;
+    let formulasUnlocked = 0; // Nova variável para controlar o caderno sem bugar
     let timer;
     let timeLeft = 30;
     let currentShuffledOptions = [];
@@ -355,8 +361,8 @@
         shuffleQuestions(); 
         currentQuestionIndex = 0;
         score = 0;
+        formulasUnlocked = 0;
         
-        // Limpar o caderno com segurança mantendo apenas a estrutura limpa
         document.getElementById('notebook-content').innerHTML = '<p id="placeholder-text" style="text-align: center; color: #888; font-style: italic;">Acerte as questões para decifrar os segredos e teoremas ocultos de Ramanujan aqui...</p>';
         
         document.getElementById('screen-intro').classList.add('hidden');
@@ -423,11 +429,14 @@
             let notebook = document.getElementById('notebook-content');
             let entry = document.createElement('div');
             entry.className = 'formula-entry';
-            entry.innerText = ramanujanFormulas[score] || "✨ Teorema Oculto Desvendado!";
+            
+            // Correção aqui: Usa formulasUnlocked para indexar corretamente o caderno
+            entry.innerText = ramanujanFormulas[formulasUnlocked] || "✨ Teorema Oculto Desvendado!";
             notebook.appendChild(entry);
             notebook.scrollTop = notebook.scrollHeight;
 
             score++;
+            formulasUnlocked++;
             feedbackPanel.innerText = "✨ Correto! Teorema anotado no caderno!";
             feedbackPanel.className = "feedback-overlay correct-msg";
         } else {
@@ -458,14 +467,4 @@
         if (percentage >= 70) {
             feedback.innerText = "Excelente! Você tem a mente matemática de Ramanujan! 🧠✨";
             feedback.style.color = "#4ade80";
-        } else if (percentage >= 40) {
-            feedback.innerText = "Bom trabalho! Continue preenchendo o caderno! 📊";
-            feedback.style.color = "#ffd700";
-        } else {
-            feedback.innerText = "Não desista! Tente novamente para reescrever as fórmulas! 📐";
-            feedback.style.color = "#f87171";
-        }
-    }
-
-    function restartGame() {
-        document.getElem
+       
