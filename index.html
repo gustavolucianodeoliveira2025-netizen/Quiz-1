@@ -12,7 +12,7 @@
             --card-bg: #13192e;
             --text: #ffffff;
             --text-secondary: #a0aec0;
-            --notebook-bg: #2a1f10;
+            --notebook-bg: #120e0a;
         }
 
         body {
@@ -31,7 +31,7 @@
             position: relative;
         }
 
-        /* Fundo Animado com Símbolos Matemáticos */
+        /* Fundo Animado com Símbolos */
         .math-bg {
             position: absolute;
             top: 0;
@@ -45,7 +45,7 @@
 
         .math-element {
             position: absolute;
-            color: rgba(255, 231, 92, 0.06);
+            color: rgba(255, 231, 92, 0.04);
             font-family: 'Courier New', monospace;
             font-size: 24px;
             font-weight: bold;
@@ -60,7 +60,6 @@
             100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
         }
 
-        /* Layout em duas colunas para o Caderno e o Quiz */
         .game-layout {
             display: flex;
             gap: 25px;
@@ -70,7 +69,7 @@
             position: relative;
         }
 
-        /* O CADERNO DE RAMANUJAN */
+        /* O CADERNO */
         .notebook {
             flex: 1;
             background: linear-gradient(135deg, #1d1710 0%, #120e0a 100%);
@@ -130,21 +129,15 @@
             border: 2px solid rgba(255, 215, 0, 0.2);
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
             text-align: center;
-            transition: all 0.3s ease;
         }
 
-        /* Efeito de Sacudir quando Erra */
-        .shake {
-            animation: shakeAnim 0.4s ease;
-        }
-
+        .shake { animation: shakeAnim 0.4s ease; }
         @keyframes shakeAnim {
             0%, 100% { transform: translateX(0); }
             20%, 60% { transform: translateX(-8px); }
             40%, 80% { transform: translateX(8px); }
         }
 
-        /* Barra de Progresso */
         .progress-bar-container {
             width: 100%;
             height: 6px;
@@ -182,11 +175,7 @@
             text-align: left;
         }
 
-        .rules-box h4 {
-            margin-top: 0;
-            color: var(--text);
-            margin-bottom: 8px;
-        }
+        .rules-box h4 { margin-top: 0; color: var(--text); margin-bottom: 8px; }
 
         .btn {
             background: linear-gradient(135deg, var(--primary) 0%, #283593 100%);
@@ -234,9 +223,8 @@
         
         .correct-msg { color: #4ade80; border: 2px solid #4ade80; background: rgba(74, 222, 128, 0.1); }
         .wrong-msg { color: #f87171; border: 2px solid #f87171; background: rgba(248, 113, 113, 0.1); }
-        .hidden { display: none; }
+        .hidden { display: none !important; }
 
-        /* Ajustes para Telas Menores (Celulares) */
         @media (max-width: 768px) {
             .game-layout { flex-direction: column; }
             .notebook { max-height: 200px; }
@@ -274,7 +262,7 @@
             </div>
 
             <p style="text-align: center; font-style: italic;">Você consegue decifrar os enigmas e completar o caderno do mestre?</p>
-            <button class="btn" onclick="startGame()" style="margin-top: 10px; background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%); color: #0a0e1a; font-size: 18px;">Iniciar Desafio</button>
+            <button class="btn" id="start-btn" style="margin-top: 10px; background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%); color: #0a0e1a; font-size: 18px;">Iniciar Desafio</button>
         </div>
 
         <div id="screen-quiz" class="hidden">
@@ -295,7 +283,7 @@
             <h1>🏆 Desafio Concluído!</h1>
             <p id="score-text" style="font-size: 18px; font-weight: bold; text-align: center; margin-top: 20px;"></p>
             <h2 id="feedback-message" style="margin: 25px 0; font-size: 22px;"></h2>
-            <button class="btn" onclick="restartGame()" style="background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%); color: #0a0e1a;">Jogar Novamente</button>
+            <button class="btn" id="restart-btn" style="background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%); color: #0a0e1a;">Jogar Novamente</button>
         </div>
     </div>
 </div>
@@ -314,7 +302,6 @@
         { q: "Qual dos números abaixo é divisível por 9?", options: ["45", "46", "47", "49"], correct: 0, time: 20 }
     ];
 
-    // Fórmulas de Ramanujan limpas de indexação problemática
     const ramanujanFormulas = [
         "✨ Descoberto: 1729 = 1³ + 12³ = 9³ + 10³\n(O menor número de Táxi!)",
         "✨ Identidade de Ramanujan:\n1 + 2 + 3 + 4 + ... = -1/12\n(Usada na Física Quântica!)",
@@ -331,13 +318,13 @@
     let questions = [];
     let currentQuestionIndex = 0;
     let score = 0;
-    let formulasUnlocked = 0; // Nova variável para controlar o caderno sem bugar
+    let formulasUnlocked = 0;
     let timer;
     let timeLeft = 30;
     let currentShuffledOptions = [];
     let currentCorrectIndex = -1;
 
-    // Gerar fundo dinâmico
+    // Gerar fundo dinâmico de símbolos
     const mathSymbols = ['1729', 'x²', '√y', '∫', 'π', 'Ta(2)', '1³+12³', '∑', '∞', '9³+10³'];
     const bgContainer = document.getElementById('math-bg');
     for (let i = 0; i < 12; i++) {
@@ -348,6 +335,10 @@
         el.style.animationDelay = Math.random() * 12 + 's';
         bgContainer.appendChild(el);
     }
+
+    // Vincular botões estritamente via Javascript para evitar falha de escopo
+    document.getElementById('start-btn').addEventListener('click', startGame);
+    document.getElementById('restart-btn').addEventListener('click', restartGame);
 
     function shuffleQuestions() {
         questions = [...originalQuestions];
@@ -405,7 +396,7 @@
             button.className = 'btn option-btn';
             button.innerText = option;
             button.id = 'opt-' + index;
-            button.onclick = () => checkAnswer(index);
+            button.addEventListener('click', () => checkAnswer(index));
             optionsBox.appendChild(button);
         });
     }
@@ -429,8 +420,6 @@
             let notebook = document.getElementById('notebook-content');
             let entry = document.createElement('div');
             entry.className = 'formula-entry';
-            
-            // Correção aqui: Usa formulasUnlocked para indexar corretamente o caderno
             entry.innerText = ramanujanFormulas[formulasUnlocked] || "✨ Teorema Oculto Desvendado!";
             notebook.appendChild(entry);
             notebook.scrollTop = notebook.scrollHeight;
@@ -467,4 +456,8 @@
         if (percentage >= 70) {
             feedback.innerText = "Excelente! Você tem a mente matemática de Ramanujan! 🧠✨";
             feedback.style.color = "#4ade80";
-       
+        } else if (percentage >= 40) {
+            feedback.innerText = "Bom trabalho! Continue preenchendo o caderno! 📊";
+            feedback.style.color = "#ffd700";
+        } else {
+            feedback.innerText = "Não desista! Tente novamente para reescrever as fórm
