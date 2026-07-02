@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Mente Divina de Ramanujan — O Desafio dos Deuses Matemáticos</title>
+    <title>A Mente Divina de Ramanujan — O Desafio dos Números</title>
     <style>
         :root {
             --primary: #1a237e;
@@ -31,7 +31,7 @@
             position: relative;
         }
 
-        /* Fundo Animado */
+        /* Fundo Animado com Símbolos Matemáticos */
         .math-bg {
             position: absolute;
             top: 0;
@@ -112,6 +112,7 @@
             border-left: 3px solid var(--accent);
             font-size: 14px;
             animation: writeIn 0.5s ease forwards;
+            white-space: pre-line;
         }
 
         @keyframes writeIn {
@@ -159,7 +160,7 @@
             transition: width 0.4s ease;
         }
 
-        h1 { color: var(--accent); margin-top: 0; font-size: 26px; }
+        h1 { color: var(--accent); margin-top: 0; font-size: 26px; line-height: 1.3; }
         p { color: var(--text-secondary); line-height: 1.6; font-size: 15px; text-align: justify; }
 
         .story-box {
@@ -184,9 +185,6 @@
             margin-top: 0;
             color: var(--text);
             margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
 
         .btn {
@@ -234,7 +232,7 @@
         .wrong-msg { color: #f87171; border: 2px solid #f87171; background: rgba(248, 113, 113, 0.1); }
         .hidden { display: none; }
 
-        /* Responsividade para Celular */
+        /* Ajustes para Telas Menores (Celulares) */
         @media (max-width: 768px) {
             .game-layout { flex-direction: column; }
             .notebook { max-height: 200px; }
@@ -268,7 +266,7 @@
                 <p style="margin: 5px 0; font-size: 14px;">• Você enfrentará <strong>10 desafios matemáticos</strong> de níveis variados.</p>
                 <p style="margin: 5px 0; font-size: 14px;">• Fique atento: <strong>cada questão possui um tempo limite</strong> correndo no cronômetro.</p>
                 <p style="margin: 5px 0; font-size: 14px;">• As perguntas e as alternativas mudam de ordem toda vez que você joga.</p>
-                <p style="margin: 5px 0; font-size: 14px;">• <strong>Mecânica Especial:</strong> A cada acerto seu, uma fórmula real anotada nos diários originais de Ramanujan será psicografada e salva no seu <em>Caderno de Fórmulas</em> à esquerda!</p>
+                <p style="margin: 5px 0; font-size: 14px;">• <strong>Mecânica Especial:</strong> A cada acerto seu, uma fórmula real anotada nos diários originais de Ramanujan será gerada e salva no seu <em>Caderno de Fórmulas</em> à esquerda!</p>
             </div>
 
             <p style="text-align: center; font-style: italic;">Você consegue decifrar os enigmas e completar o caderno do mestre?</p>
@@ -312,17 +310,18 @@
         { q: "Qual dos números abaixo é divisível por 9?", options: ["45", "46", "47", "49"], correct: 0, time: 20 }
     ];
 
+    // Fórmulas reais de Ramanujan desbloqueadas por acertos
     const ramanujanFormulas = [
         "✨ Descoberto: 1729 = 1³ + 12³ = 9³ + 10³ (O menor número de Táxi!)",
-        "✨ Identidade de Ramanujan:\n1 + 2 + 3 + 4 + ... = -1/12 (Física Quântica!)",
+        "✨ Identidade de Ramanujan:\n1 + 2 + 3 + 4 + ... = -1/12 (Usada na Física Quântica!)",
         "✨ Série Infinita para π:\n(2√2 / 9801) * ∑ (4k)!(1103+26390k) / (k!)^4 * 396^(4k)",
-        "✨ Fração Contínua:\n1 / (1 + e^(-2π) / (1 + e^(-4π) / ... ))",
-        "✨ Teorema de Partição:\np(5n + 4) é sempre divisível por 5.",
+        "✨ Fração Contínua Extraordinária:\n1 / (1 + e^(-2π) / (1 + e^(-4π) / ... ))",
+        "✨ Teorema de Partição de Números:\np(5n + 4) é sempre divisível por 5.",
         "✨ Função Teta de Ramanujan:\nf(a, b) = ∑ a^(n(n+1)/2) * b^(n(n-1)/2)",
-        "✨ Número de Hardy-Ramanujan:\nTa(3) = 87539319 = 167³ + 436³",
-        "✨ Equação Modular:\nπ = 22/7 (Aproximação clássica usada pelo gênio)",
-        "✨ Identidade de Rogers-Ramanujan:\nG(q) = ∑ q^(n²) / (q;q)_n",
-        "✨ Mente Iluminada: Parabéns, você decifrou todos os enigmas!"
+        "✨ Outro Número de Táxi:\nTa(3) = 87539319 = 167³ + 436³",
+        "✨ Equação Modular Mágica:\nπ ≈ 22/7 (Famosa aproximação geométrica)",
+        "✨ Identidade Rogers-Ramanujan:\nG(q) = ∑ q^(n²) / (q;q)_n",
+        "✨ Conclusão Imperial: Parabéns, você desvendou a mente do mestre!"
     ];
 
     let questions = [];
@@ -333,7 +332,7 @@
     let currentShuffledOptions = [];
     let currentCorrectIndex = -1;
 
-    // Fundo flutuante
+    // Gerar fundo dinâmico
     const mathSymbols = ['1729', 'x²', '√y', '∫', 'π', 'Ta(2)', '1³+12³', '∑', '∞', '9³+10³'];
     const bgContainer = document.getElementById('math-bg');
     for (let i = 0; i < 12; i++) {
@@ -345,6 +344,7 @@
         bgContainer.appendChild(el);
     }
 
+    // Aleatorizar as Questões
     function shuffleQuestions() {
         questions = [...originalQuestions];
         for (let i = questions.length - 1; i > 0; i--) {
@@ -370,6 +370,7 @@
         document.getElementById('time-left').innerText = timeLeft;
         document.getElementById('feedback-panel').classList.add('hidden');
         
+        // Atualizar barra de progresso no topo
         let progWidth = (currentQuestionIndex / questions.length) * 100;
         document.getElementById('progress').style.width = progWidth + '%';
 
@@ -382,6 +383,7 @@
         document.getElementById('question-number').innerText = `Questão ${currentQuestionIndex + 1}/${questions.length}`;
         document.getElementById('question-text').innerText = currentQuestion.q;
 
+        // Aleatorizar as Respostas desta questão
         let originalOptions = currentQuestion.options;
         let correctAnswerText = originalOptions[currentQuestion.correct];
         currentShuffledOptions = [...originalOptions];
@@ -419,9 +421,10 @@
             let notebook = document.getElementById('notebook-content');
             if(score === 0 && notebook.innerText.includes("Acerte as questões")) { notebook.innerHTML = ''; }
             
+            // Adicionar folha ao caderno
             let entry = document.createElement('div');
             entry.className = 'formula-entry';
-            entry.innerText = ramanujanFormulas[score] || "✨ Teorema Desbloqueado!";
+            entry.innerText = ramanujanFormulas[score] || "✨ Teorema Oculto Desvendado!";
             notebook.appendChild(entry);
             notebook.scrollTop = notebook.scrollHeight;
 
@@ -429,6 +432,7 @@
             feedbackPanel.innerText = "✨ Correto! Teorema anotado no caderno!";
             feedbackPanel.className = "feedback-overlay correct-msg";
         } else {
+            // Efeito Sacudir (Shake) ao errar
             quizContainer.classList.add('shake');
             setTimeout(() => quizContainer.classList.remove('shake'), 400);
 
@@ -466,9 +470,4 @@
     }
 
     function restartGame() {
-        document.getElementById('screen-result').classList.add('hidden');
-        document.getElementById('screen-intro').classList.remove('hidden');
-    }
-</script>
-</body>
-</html>
+        document.getElementById('screen-result').classL
