@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>O Enigma de Ramanujan — Desafio Matemático</title>
+    <title>A Mente Divina de Ramanujan — O Desafio dos Deuses Matemáticos</title>
     <style>
         :root {
             --primary: #1a237e;
@@ -12,6 +12,7 @@
             --card-bg: #13192e;
             --text: #ffffff;
             --text-secondary: #a0aec0;
+            --notebook-bg: #2a1f10;
         }
 
         body {
@@ -30,7 +31,7 @@
             position: relative;
         }
 
-        /* Fundo Animado com Fórmulas Flutuantes */
+        /* Fundo Animado */
         .math-bg {
             position: absolute;
             top: 0;
@@ -44,12 +45,12 @@
 
         .math-element {
             position: absolute;
-            color: rgba(255, 231, 92, 0.08);
+            color: rgba(255, 231, 92, 0.06);
             font-family: 'Courier New', monospace;
             font-size: 24px;
             font-weight: bold;
             user-select: none;
-            animation: floatUp 12s linear infinite;
+            animation: floatUp 14s linear infinite;
         }
 
         @keyframes floatUp {
@@ -59,33 +60,110 @@
             100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
         }
 
+        /* Layout em duas colunas para o Caderno e o Quiz */
+        .game-layout {
+            display: flex;
+            gap: 25px;
+            max-width: 1000px;
+            width: 100%;
+            z-index: 2;
+            position: relative;
+        }
+
+        /* O CADERNO DE RAMANUJAN */
+        .notebook {
+            flex: 1;
+            background: linear-gradient(135deg, #1d1710 0%, #120e0a 100%);
+            border: 4px solid #8B5A2B;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 0 10px 25px rgba(0,0,0,0.5);
+            max-height: 570px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .notebook::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: rgba(139, 90, 43, 0.4);
+        }
+
+        .notebook h3 {
+            color: var(--accent);
+            font-family: 'Georgia', serif;
+            margin-top: 0;
+            border-bottom: 1px dashed rgba(255,215,0,0.3);
+            padding-bottom: 10px;
+            text-align: center;
+        }
+
+        .formula-entry {
+            font-family: 'Courier New', monospace;
+            color: #ffe066;
+            background: rgba(255, 215, 0, 0.05);
+            padding: 10px;
+            margin-bottom: 12px;
+            border-radius: 5px;
+            border-left: 3px solid var(--accent);
+            font-size: 14px;
+            animation: writeIn 0.5s ease forwards;
+        }
+
+        @keyframes writeIn {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* CONTAINER DO QUIZ */
         .container {
+            flex: 1.3;
             background-color: var(--card-bg);
             padding: 40px;
             border-radius: 20px;
-            border: 2px solid rgba(255, 215, 0, 0.3);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 15px rgba(26, 35, 126, 0.5);
-            max-width: 600px;
-            width: 100%;
+            border: 2px solid rgba(255, 215, 0, 0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
             text-align: center;
-            position: relative;
-            z-index: 2;
-            backdrop-filter: blur(4px);
             transition: all 0.3s ease;
         }
 
-        h1 { 
-            color: var(--accent); 
-            margin-top: 0; 
-            font-size: 28px; 
-            letter-spacing: 1px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        /* Efeito de Sacudir quando Erra */
+        .shake {
+            animation: shakeAnim 0.4s ease;
         }
 
-        p { color: var(--text-secondary); line-height: 1.6; font-size: 16px; text-align: justify; }
-        
+        @keyframes shakeAnim {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
+        }
+
+        /* Barra de Progresso */
+        .progress-bar-container {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent), #ffa500);
+            transition: width 0.4s ease;
+        }
+
+        h1 { color: var(--accent); margin-top: 0; font-size: 26px; }
+        p { color: var(--text-secondary); line-height: 1.6; font-size: 15px; text-align: justify; }
+
         .story-box {
-            background: rgba(26, 35, 126, 0.4);
+            background: rgba(26, 35, 126, 0.3);
             border-left: 4px solid var(--accent);
             padding: 15px;
             margin: 20px 0;
@@ -93,13 +171,22 @@
             text-align: left;
         }
 
-        .formula {
-            font-family: 'Times New Roman', Times, serif;
-            font-size: 18px;
-            text-align: center;
-            margin: 10px 0;
-            color: var(--accent);
-            font-weight: bold;
+        .rules-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            text-align: left;
+        }
+
+        .rules-box h4 {
+            margin-top: 0;
+            color: var(--text);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .btn {
@@ -114,61 +201,43 @@
             transition: all 0.2s ease;
             width: 100%;
             margin-bottom: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
         }
 
         .btn:hover:not(:disabled) { 
             transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(255, 215, 0, 0.2);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.15);
             border-color: var(--accent);
         }
 
-        .btn:active:not(:disabled) {
-            transform: translateY(1px);
-        }
-
-        .btn:disabled { background: #1e2538; color: #555c70; border-color: transparent; cursor: not-allowed; transform: none; }
-        
-        .option-btn {
-            text-align: left;
-            padding-left: 20px;
-            background: #1a2036;
-        }
+        .btn:disabled { background: #1e2538; color: #555c70; border-color: transparent; cursor: not-allowed; }
+        .option-btn { text-align: left; padding-left: 20px; background: #1a2036; }
 
         .timer {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
             color: var(--accent);
             border: 2px solid var(--accent);
-            padding: 6px 16px;
+            padding: 4px 12px;
             border-radius: 30px;
-            display: inline-block;
             background-color: rgba(0,0,0,0.3);
-        }
-
-        .options-container {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-top: 25px;
         }
 
         .feedback-overlay {
             font-size: 16px;
             font-weight: bold;
-            margin: 20px 0;
-            padding: 15px;
+            margin: 15px 0;
+            padding: 12px;
             border-radius: 10px;
-            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         
         .correct-msg { color: #4ade80; border: 2px solid #4ade80; background: rgba(74, 222, 128, 0.1); }
         .wrong-msg { color: #f87171; border: 2px solid #f87171; background: rgba(248, 113, 113, 0.1); }
         .hidden { display: none; }
-        
-        @keyframes popIn {
-            0% { transform: scale(0.9); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
+
+        /* Responsividade para Celular */
+        @media (max-width: 768px) {
+            .game-layout { flex-direction: column; }
+            .notebook { max-height: 200px; }
         }
     </style>
 </head>
@@ -176,40 +245,56 @@
 
 <div class="math-bg" id="math-bg"></div>
 
-<div class="container">
-    <!-- TELA INICIAL -->
-    <div id="screen-intro">
-        <h1>🔢 O Enigma de Ramanujan</h1>
-        <div class="story-box">
-            <p>Em 1918, no hospital na Inglaterra, o matemático Srinivasa Ramanujan recebeu a visita de G. H. Hardy, que comentou ter chegado em um táxi de número 1729, achando-o sem graça.</p>
-            <p>Ramanujan respondeu na hora que esse era um número especial: o menor que pode ser escrito como a soma de dois cubos positivos de duas formas diferentes:</p>
-            <div class="formula">1729 = 1³ + 12³</div>
-            <div class="formula">1729 = 9³ + 10³</div>
-            <p>Essa curiosidade deu origem aos <strong>Números de Táxi (Ta(n))</strong>. O 1729 ficou mundialmente famoso como o Número de Ramanujan!</p>
+<div class="game-layout">
+    <div class="notebook">
+        <h3>📖 Caderno de Fórmulas</h3>
+        <div id="notebook-content">
+            <p style="text-align: center; color: #888; font-style: italic;">Acerte as questões para decifrar os segredos e teoremas ocultos de Ramanujan aqui...</p>
         </div>
-        <p>Prepare-se para resolver 10 desafios de matemática inspirados nesse grande gênio. O tempo corre!</p>
-        <button class="btn" onclick="startGame()" style="margin-top: 15px; background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%); color: #0a0e1a; font-size: 18px;">Iniciar Desafio</button>
     </div>
 
-    <!-- TELA DE QUESTÕES -->
-    <div id="screen-quiz" class="hidden">
-        <div id="info-header" style="display: flex; justify-content: space-between; align-items: center; color: var(--text-secondary); margin-bottom: 15px;">
-            <span id="question-number" style="font-weight: bold; font-size: 16px;">Questão 1/10</span>
-            <div class="timer">⏱️ <span id="time-left">30</span>s</div>
-        </div>
-        <h2 id="question-text" style="color: white; font-size: 20px; margin-bottom: 25px; text-align: left; line-height: 1.5;">Pergunta aqui</h2>
-        
-        <div id="feedback-panel" class="feedback-overlay hidden"></div>
-        <div class="options-container" id="options-box"></div>
-    </div>
+    <div class="container" id="quiz-container">
+        <div id="screen-intro">
+            <h1>✨ A Mente Divina de Ramanujan — O Desafio dos Números</h1>
+            
+            <div class="story-box">
+                <p><strong>A História do Gênio:</strong> Em 1918, enquanto estava internado em um hospital na Inglaterra, o genial matemático indiano Srinivasa Ramanujan recebeu a visita de seu colega G. H. Hardy. Ao comentar que havia chegado em um táxi comum de número <strong>1729</strong>, achando-o sem graça, Ramanujan respondeu no ato: <em>"Não, Hardy! Esse é um número muito especial. É o menor número inteiro que pode ser escrito como a soma de dois cubos positivos de duas formas diferentes!"</em></p>
+                <p style="text-align:center; color: var(--accent); font-weight:bold; margin: 10px 0;">1729 = 1³ + 12³<br>1729 = 9³ + 10³</p>
+                <p>Essa incrível intuição deu origem aos famosos <strong>"Fórmulas e Números de Táxi"</strong> na matemática moderna.</p>
+            </div>
 
-    <!-- TELA FINAL -->
-    <div id="screen-result" class="hidden">
-        <h1>🏆 Desafio Concluído!</h1>
-        <p id="score-text" style="font-size: 18px; font-weight: bold; color: white; text-align: center; margin-top: 20px;"></p>
-        <h2 id="feedback-message" style="margin: 25px 0; font-size: 22px;"></h2>
-        
-        <button class="btn" onclick="restartGame()" style="background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%); color: #0a0e1a;">Jogar Novamente</button>
+            <div class="rules-box">
+                <h4>🎮 Como Funciona o Quiz?</h4>
+                <p style="margin: 5px 0; font-size: 14px;">• Você enfrentará <strong>10 desafios matemáticos</strong> de níveis variados.</p>
+                <p style="margin: 5px 0; font-size: 14px;">• Fique atento: <strong>cada questão possui um tempo limite</strong> correndo no cronômetro.</p>
+                <p style="margin: 5px 0; font-size: 14px;">• As perguntas e as alternativas mudam de ordem toda vez que você joga.</p>
+                <p style="margin: 5px 0; font-size: 14px;">• <strong>Mecânica Especial:</strong> A cada acerto seu, uma fórmula real anotada nos diários originais de Ramanujan será psicografada e salva no seu <em>Caderno de Fórmulas</em> à esquerda!</p>
+            </div>
+
+            <p style="text-align: center; font-style: italic;">Você consegue decifrar os enigmas e completar o caderno do mestre?</p>
+            <button class="btn" onclick="startGame()" style="margin-top: 10px; background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%); color: #0a0e1a; font-size: 18px;">Iniciar Desafio</button>
+        </div>
+
+        <div id="screen-quiz" class="hidden">
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progress"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <span id="question-number" style="color: var(--text-secondary); font-weight: bold;">Questão 1/10</span>
+                <div class="timer">⏱️ <span id="time-left">30</span>s</div>
+            </div>
+            <h2 id="question-text" style="color: white; font-size: 19px; margin-bottom: 25px; text-align: left; line-height: 1.5;">Pergunta aqui</h2>
+            
+            <div id="feedback-panel" class="feedback-overlay hidden"></div>
+            <div style="display: flex; flex-direction: column; gap: 12px;" id="options-box"></div>
+        </div>
+
+        <div id="screen-result" class="hidden">
+            <h1>🏆 Desafio Concluído!</h1>
+            <p id="score-text" style="font-size: 18px; font-weight: bold; text-align: center; margin-top: 20px;"></p>
+            <h2 id="feedback-message" style="margin: 25px 0; font-size: 22px;"></h2>
+            <button class="btn" onclick="restartGame()" style="background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%); color: #0a0e1a;">Jogar Novamente</button>
+        </div>
     </div>
 </div>
 
@@ -227,6 +312,19 @@
         { q: "Qual dos números abaixo é divisível por 9?", options: ["45", "46", "47", "49"], correct: 0, time: 20 }
     ];
 
+    const ramanujanFormulas = [
+        "✨ Descoberto: 1729 = 1³ + 12³ = 9³ + 10³ (O menor número de Táxi!)",
+        "✨ Identidade de Ramanujan:\n1 + 2 + 3 + 4 + ... = -1/12 (Física Quântica!)",
+        "✨ Série Infinita para π:\n(2√2 / 9801) * ∑ (4k)!(1103+26390k) / (k!)^4 * 396^(4k)",
+        "✨ Fração Contínua:\n1 / (1 + e^(-2π) / (1 + e^(-4π) / ... ))",
+        "✨ Teorema de Partição:\np(5n + 4) é sempre divisível por 5.",
+        "✨ Função Teta de Ramanujan:\nf(a, b) = ∑ a^(n(n+1)/2) * b^(n(n-1)/2)",
+        "✨ Número de Hardy-Ramanujan:\nTa(3) = 87539319 = 167³ + 436³",
+        "✨ Equação Modular:\nπ = 22/7 (Aproximação clássica usada pelo gênio)",
+        "✨ Identidade de Rogers-Ramanujan:\nG(q) = ∑ q^(n²) / (q;q)_n",
+        "✨ Mente Iluminada: Parabéns, você decifrou todos os enigmas!"
+    ];
+
     let questions = [];
     let currentQuestionIndex = 0;
     let score = 0;
@@ -235,21 +333,18 @@
     let currentShuffledOptions = [];
     let currentCorrectIndex = -1;
 
-    // Criar elementos matemáticos flutuantes no fundo
-    const mathSymbols = ['1729', 'x²', '√y', '∫', 'π', 'Ta(2)', '1³+12³', '∑', 'f(x)', '9³+10³', '∞', '≠'];
+    // Fundo flutuante
+    const mathSymbols = ['1729', 'x²', '√y', '∫', 'π', 'Ta(2)', '1³+12³', '∑', '∞', '9³+10³'];
     const bgContainer = document.getElementById('math-bg');
-    
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < 12; i++) {
         let el = document.createElement('div');
         el.className = 'math-element';
         el.innerText = mathSymbols[Math.floor(Math.random() * mathSymbols.length)];
         el.style.left = Math.random() * 100 + 'vw';
         el.style.animationDelay = Math.random() * 12 + 's';
-        el.style.fontSize = Math.floor(Math.random() * 20 + 16) + 'px';
         bgContainer.appendChild(el);
     }
 
-    // ALEATORIZAÇÃO DAS PERGUNTAS
     function shuffleQuestions() {
         questions = [...originalQuestions];
         for (let i = questions.length - 1; i > 0; i--) {
@@ -262,6 +357,7 @@
         shuffleQuestions(); 
         currentQuestionIndex = 0;
         score = 0;
+        document.getElementById('notebook-content').innerHTML = '';
         document.getElementById('screen-intro').classList.add('hidden');
         document.getElementById('screen-quiz').classList.remove('hidden');
         showQuestion();
@@ -274,13 +370,13 @@
         document.getElementById('time-left').innerText = timeLeft;
         document.getElementById('feedback-panel').classList.add('hidden');
         
+        let progWidth = (currentQuestionIndex / questions.length) * 100;
+        document.getElementById('progress').style.width = progWidth + '%';
+
         timer = setInterval(() => {
             timeLeft--;
             document.getElementById('time-left').innerText = timeLeft;
-            if (timeLeft <= 0) {
-                clearInterval(timer);
-                checkAnswer(-1); 
-            }
+            if (timeLeft <= 0) { checkAnswer(-1); }
         }, 1000);
 
         document.getElementById('question-number').innerText = `Questão ${currentQuestionIndex + 1}/${questions.length}`;
@@ -288,19 +384,15 @@
 
         let originalOptions = currentQuestion.options;
         let correctAnswerText = originalOptions[currentQuestion.correct];
-        
-        // ALEATORIZAÇÃO DAS RESPOSTAS
         currentShuffledOptions = [...originalOptions];
         for (let i = currentShuffledOptions.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [currentShuffledOptions[i], currentShuffledOptions[j]] = [currentShuffledOptions[j], currentShuffledOptions[i]];
         }
-        
         currentCorrectIndex = currentShuffledOptions.indexOf(correctAnswerText);
 
         let optionsBox = document.getElementById('options-box');
         optionsBox.innerHTML = '';
-
         currentShuffledOptions.forEach((option, index) => {
             let button = document.createElement('button');
             button.className = 'btn option-btn';
@@ -320,15 +412,28 @@
 
         let isCorrect = selectedIndex === currentCorrectIndex;
         let feedbackPanel = document.getElementById('feedback-panel');
+        let quizContainer = document.getElementById('quiz-container');
         feedbackPanel.classList.remove('hidden');
 
         if (isCorrect) {
+            let notebook = document.getElementById('notebook-content');
+            if(score === 0 && notebook.innerText.includes("Acerte as questões")) { notebook.innerHTML = ''; }
+            
+            let entry = document.createElement('div');
+            entry.className = 'formula-entry';
+            entry.innerText = ramanujanFormulas[score] || "✨ Teorema Desbloqueado!";
+            notebook.appendChild(entry);
+            notebook.scrollTop = notebook.scrollHeight;
+
             score++;
-            feedbackPanel.innerText = "✨ Resposta Correta! Brilhante!";
+            feedbackPanel.innerText = "✨ Correto! Teorema anotado no caderno!";
             feedbackPanel.className = "feedback-overlay correct-msg";
         } else {
-            let msg = selectedIndex === -1 ? "⏱️ O tempo acabou!" : "❌ Resposta Incorreta!";
-            feedbackPanel.innerText = msg + ` A resposta certa era: ${currentShuffledOptions[currentCorrectIndex]}`;
+            quizContainer.classList.add('shake');
+            setTimeout(() => quizContainer.classList.remove('shake'), 400);
+
+            let msg = selectedIndex === -1 ? "⏱️ O tempo acabou!" : "❌ Incorreto!";
+            feedbackPanel.innerText = msg + ` Resposta certa: ${currentShuffledOptions[currentCorrectIndex]}`;
             feedbackPanel.className = "feedback-overlay wrong-msg";
         }
 
@@ -341,6 +446,7 @@
     }
 
     function showResult() {
+        document.getElementById('progress').style.width = '100%';
         document.getElementById('screen-quiz').classList.add('hidden');
         document.getElementById('screen-result').classList.remove('hidden');
         let percentage = Math.round((score / questions.length) * 100);
@@ -348,13 +454,13 @@
 
         let feedback = document.getElementById('feedback-message');
         if (percentage >= 70) {
-            feedback.innerText = "Excelente! Você tem a mente matemática de Ramanujan! 🧠✨"; 
+            feedback.innerText = "Excelente! Você tem a mente matemática de Ramanujan! 🧠✨";
             feedback.style.color = "#4ade80";
         } else if (percentage >= 40) {
-            feedback.innerText = "Bom trabalho! Continue praticando para dominar os números! 📊"; 
+            feedback.innerText = "Bom trabalho! Continue preenchendo o caderno! 📊";
             feedback.style.color = "#ffd700";
         } else {
-            feedback.innerText = "Não desista! Até os maiores matemáticos falharam antes de acertar. Tente de novo! 📐"; 
+            feedback.innerText = "Não desista! Tente novamente para reescrever as fórmulas! 📐";
             feedback.style.color = "#f87171";
         }
     }
