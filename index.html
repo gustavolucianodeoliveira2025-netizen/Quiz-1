@@ -247,7 +247,7 @@
     <div class="notebook">
         <h3>📖 Caderno de Fórmulas</h3>
         <div id="notebook-content">
-            <p style="text-align: center; color: #888; font-style: italic;">Acerte as questões para decifrar os segredos e teoremas ocultos de Ramanujan aqui...</p>
+            <p id="placeholder-text" style="text-align: center; color: #888; font-style: italic;">Acerte as questões para decifrar os segredos e teoremas ocultos de Ramanujan aqui...</p>
         </div>
     </div>
 
@@ -310,7 +310,6 @@
         { q: "Qual dos números abaixo é divisível por 9?", options: ["45", "46", "47", "49"], correct: 0, time: 20 }
     ];
 
-    // Fórmulas reais de Ramanujan desbloqueadas por acertos
     const ramanujanFormulas = [
         "✨ Descoberto: 1729 = 1³ + 12³ = 9³ + 10³ (O menor número de Táxi!)",
         "✨ Identidade de Ramanujan:\n1 + 2 + 3 + 4 + ... = -1/12 (Usada na Física Quântica!)",
@@ -344,7 +343,6 @@
         bgContainer.appendChild(el);
     }
 
-    // Aleatorizar as Questões
     function shuffleQuestions() {
         questions = [...originalQuestions];
         for (let i = questions.length - 1; i > 0; i--) {
@@ -357,7 +355,10 @@
         shuffleQuestions(); 
         currentQuestionIndex = 0;
         score = 0;
-        document.getElementById('notebook-content').innerHTML = '';
+        
+        // Limpar o caderno com segurança mantendo apenas a estrutura limpa
+        document.getElementById('notebook-content').innerHTML = '<p id="placeholder-text" style="text-align: center; color: #888; font-style: italic;">Acerte as questões para decifrar os segredos e teoremas ocultos de Ramanujan aqui...</p>';
+        
         document.getElementById('screen-intro').classList.add('hidden');
         document.getElementById('screen-quiz').classList.remove('hidden');
         showQuestion();
@@ -370,7 +371,6 @@
         document.getElementById('time-left').innerText = timeLeft;
         document.getElementById('feedback-panel').classList.add('hidden');
         
-        // Atualizar barra de progresso no topo
         let progWidth = (currentQuestionIndex / questions.length) * 100;
         document.getElementById('progress').style.width = progWidth + '%';
 
@@ -383,7 +383,6 @@
         document.getElementById('question-number').innerText = `Questão ${currentQuestionIndex + 1}/${questions.length}`;
         document.getElementById('question-text').innerText = currentQuestion.q;
 
-        // Aleatorizar as Respostas desta questão
         let originalOptions = currentQuestion.options;
         let correctAnswerText = originalOptions[currentQuestion.correct];
         currentShuffledOptions = [...originalOptions];
@@ -418,10 +417,10 @@
         feedbackPanel.classList.remove('hidden');
 
         if (isCorrect) {
-            let notebook = document.getElementById('notebook-content');
-            if(score === 0 && notebook.innerText.includes("Acerte as questões")) { notebook.innerHTML = ''; }
+            let placeholder = document.getElementById('placeholder-text');
+            if (placeholder) { placeholder.remove(); }
             
-            // Adicionar folha ao caderno
+            let notebook = document.getElementById('notebook-content');
             let entry = document.createElement('div');
             entry.className = 'formula-entry';
             entry.innerText = ramanujanFormulas[score] || "✨ Teorema Oculto Desvendado!";
@@ -432,7 +431,6 @@
             feedbackPanel.innerText = "✨ Correto! Teorema anotado no caderno!";
             feedbackPanel.className = "feedback-overlay correct-msg";
         } else {
-            // Efeito Sacudir (Shake) ao errar
             quizContainer.classList.add('shake');
             setTimeout(() => quizContainer.classList.remove('shake'), 400);
 
@@ -470,4 +468,4 @@
     }
 
     function restartGame() {
-        document.getElementById('screen-result').classL
+        document.getElem
