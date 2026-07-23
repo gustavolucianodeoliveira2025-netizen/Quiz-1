@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Mente Divina de Ramanujan — O Desafio dos Números</title>
+    <title>O Enigma de Ramanujan — Desafio Matemático</title>
     <style>
         :root {
             --primary: #1a237e;
@@ -12,7 +12,6 @@
             --card-bg: #13192e;
             --text: #ffffff;
             --text-secondary: #a0aec0;
-            --gold-light: #ffe066;
         }
 
         body {
@@ -31,7 +30,7 @@
             position: relative;
         }
 
-        /* 1. FUNDO ANIMADO (SÍMBOLOS FLUTUANTES) */
+        /* Fundo Animado com Fórmulas */
         .math-bg {
             position: absolute;
             top: 0;
@@ -45,28 +44,29 @@
 
         .math-element {
             position: absolute;
-            color: rgba(255, 215, 0, 0.05);
+            color: rgba(255, 231, 92, 0.06);
             font-family: 'Courier New', monospace;
             font-size: 24px;
             font-weight: bold;
             user-select: none;
-            animation: floatUp 15s linear infinite;
+            animation: floatUp 14s linear infinite;
         }
 
         @keyframes floatUp {
-            0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+            0% { transform: translateY(105vh) rotate(0deg); opacity: 0; }
             10% { opacity: 1; }
             90% { opacity: 1; }
-            100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
         }
 
-        /* 2. LAYOUT DO JOGO (DUAS COLUNAS) */
+        /* Layout de Duas Colunas (Caderno + Quiz) */
         .game-layout {
             display: flex;
             gap: 25px;
-            max-width: 1100px;
+            max-width: 1050px;
             width: 100%;
             z-index: 2;
+            position: relative;
         }
 
         /* O CADERNO DE RAMANUJAN */
@@ -75,284 +75,422 @@
             background: linear-gradient(135deg, #1d1710 0%, #120e0a 100%);
             border: 4px solid #8B5A2B;
             border-radius: 15px;
-            padding: 20px;
-            box-shadow: inset 0 0 30px rgba(0,0,0,0.9), 0 10px 25px rgba(0,0,0,0.5);
-            height: 600px;
+            padding: 25px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 0 10px 25px rgba(0,0,0,0.5);
+            max-height: 580px;
             overflow-y: auto;
             position: relative;
         }
 
         .notebook h3 {
             color: var(--accent);
-            text-align: center;
             font-family: 'Georgia', serif;
+            margin-top: 0;
             border-bottom: 1px dashed rgba(255,215,0,0.3);
             padding-bottom: 10px;
-            margin-top: 0;
+            text-align: center;
         }
 
         .formula-entry {
             font-family: 'Courier New', monospace;
-            color: var(--gold-light);
+            color: #ffe066;
             background: rgba(255, 215, 0, 0.05);
-            padding: 12px;
-            margin-bottom: 15px;
+            padding: 10px;
+            margin-bottom: 12px;
+            border-radius: 5px;
             border-left: 3px solid var(--accent);
-            border-radius: 4px;
-            font-size: 14px;
-            white-space: pre-line;
-            animation: fadeIn 0.8s ease forwards;
+            font-size: 13px;
+            animation: writeIn 0.5s ease;
         }
 
-        /* O CONTAINER DO QUIZ */
+        @keyframes writeIn {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* CONTAINER DO QUIZ */
         .container {
-            flex: 1.5;
+            flex: 1.3;
             background-color: var(--card-bg);
-            padding: 40px;
+            padding: 35px;
             border-radius: 20px;
-            border: 2px solid rgba(255, 215, 0, 0.2);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            border: 2px solid rgba(255, 215, 0, 0.25);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
             text-align: center;
-            position: relative;
-            min-height: 550px;
+            transition: all 0.3s ease;
+        }
+
+        /* ANIMAÇÕES DE INTRODUÇÃO (LIVRO E BONECO) */
+        .intro-visuals {
             display: flex;
-            flex-direction: column;
             justify-content: center;
+            align-items: center;
+            gap: 25px;
+            margin: 15px 0;
         }
 
-        /* EFEITO DE SACUDIDA (ERRO) */
-        .shake { animation: shakeEffect 0.4s ease-in-out; }
-        @keyframes shakeEffect {
+        /* Boneco Acenando */
+        .avatar-container {
+            font-size: 45px;
+            animation: waveAnim 1.5s infinite ease-in-out;
+            transform-origin: bottom center;
+        }
+
+        @keyframes waveAnim {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(15deg) translateY(-5px); }
+        }
+
+        /* Livro Abrindo e Fechando */
+        .animated-book {
+            width: 60px;
+            height: 45px;
+            background: #8B5A2B;
+            border-radius: 4px;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+            animation: bookPulse 2s infinite ease-in-out;
+        }
+
+        .animated-book::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: #3e1e08;
+            transform: translateX(-50%);
+        }
+
+        @keyframes bookPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+
+        /* Efeito de Sacudir ao Errar */
+        .shake {
+            animation: shakeAnim 0.4s ease;
+        }
+
+        @keyframes shakeAnim {
             0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            50% { transform: translateX(10px); }
-            75% { transform: translateX(-10px); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
         }
 
-        h1 { color: var(--accent); font-size: 28px; margin-bottom: 15px; }
-        p { color: var(--text-secondary); line-height: 1.6; text-align: justify; }
+        /* Barra de Progresso */
+        .progress-bar-container {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent), #ffa500);
+            transition: width 0.4s ease;
+        }
+
+        h1 { color: var(--accent); margin-top: 0; font-size: 24px; letter-spacing: 0.5px; }
+        p { color: var(--text-secondary); line-height: 1.5; font-size: 14px; text-align: justify; }
+
+        .story-box {
+            background: rgba(26, 35, 126, 0.3);
+            border-left: 4px solid var(--accent);
+            padding: 12px 15px;
+            margin: 15px 0;
+            border-radius: 0 10px 10px 0;
+            text-align: left;
+        }
 
         .btn {
             background: linear-gradient(135deg, var(--primary) 0%, #283593 100%);
             color: white;
-            padding: 15px 25px;
             border: 1px solid rgba(255,255,255,0.1);
+            padding: 13px 20px;
+            font-size: 15px;
+            font-weight: 600;
             border-radius: 10px;
-            font-weight: bold;
             cursor: pointer;
+            transition: all 0.2s ease;
             width: 100%;
             margin-bottom: 10px;
-            transition: 0.3s;
-            font-size: 16px;
         }
 
-        .btn:hover:not(:disabled) { transform: translateY(-3px); border-color: var(--accent); box-shadow: 0 5px 15px rgba(255,215,0,0.2); }
-        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn:hover:not(:disabled) { 
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.2);
+            border-color: var(--accent);
+        }
 
+        .btn:disabled { background: #1e2538; color: #555c70; border-color: transparent; cursor: not-allowed; }
         .option-btn { text-align: left; padding-left: 20px; background: #1a2036; }
 
-        .timer-box { font-weight: bold; color: var(--accent); border: 2px solid var(--accent); padding: 5px 15px; border-radius: 20px; background: rgba(0,0,0,0.3); }
+        .timer {
+            font-size: 15px;
+            font-weight: bold;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+            padding: 4px 12px;
+            border-radius: 30px;
+            background-color: rgba(0,0,0,0.3);
+        }
 
-        .hidden { display: none !important; }
+        .feedback-overlay {
+            font-size: 15px;
+            font-weight: bold;
+            margin: 12px 0;
+            padding: 10px;
+            border-radius: 8px;
+        }
+        
+        .correct-msg { color: #4ade80; border: 2px solid #4ade80; background: rgba(74, 222, 128, 0.1); }
+        .wrong-msg { color: #f87171; border: 2px solid #f87171; background: rgba(248, 113, 113, 0.1); }
+        .hidden { display: none; }
 
-        .progress-bar { width: 100%; height: 8px; background: #222; border-radius: 4px; margin-bottom: 20px; overflow: hidden; }
-        .progress-fill { height: 100%; width: 0%; background: var(--accent); transition: 0.4s; }
-
-        .feedback { margin: 15px 0; padding: 10px; border-radius: 8px; font-weight: bold; }
-        .correct { background: rgba(74, 222, 128, 0.2); color: #4ade80; border: 1px solid #4ade80; }
-        .wrong { background: rgba(248, 113, 113, 0.2); color: #f87171; border: 1px solid #f87171; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
-
-        @media (max-width: 800px) {
+        @media (max-width: 768px) {
             .game-layout { flex-direction: column; }
-            .notebook { height: 180px; }
+            .notebook { max-height: 180px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="math-bg" id="math-bg"></div>
+<div class="math-bg" id="math-bg"></div>
 
-    <div class="game-layout">
-        <div class="notebook">
-            <h3>📖 Caderno de Ramanujan</h3>
-            <div id="notebook-content">
-                <p id="placeholder" style="text-align: center; color: #666; font-style: italic; margin-top: 50px;">
-                    Suas descobertas aparecerão aqui...
-                </p>
-            </div>
-        </div>
-
-        <div class="container" id="quiz-container">
-            
-            <div id="intro-screen">
-                <h1>✨ A Mente Divina de Ramanujan</h1>
-                <p><strong>A História:</strong> Em 1918, Ramanujan estava internado na Inglaterra quando recebeu a visita de G. H. Hardy. Hardy mencionou que o táxi número <strong>1729</strong> era "sem graça". Ramanujan rebateu na hora: <em>"É o menor número que pode ser escrito como a soma de dois cubos de duas formas diferentes!"</em></p>
-                <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin: 20px 0; text-align: left;">
-                    <strong style="color: var(--accent);">Como jogar:</strong><br>
-                    • Resolva 10 problemas de matemática.<br>
-                    • Cada acerto libera um teorema real no seu Caderno.<br>
-                    • Cuidado com o cronômetro!
-                </div>
-                <button class="btn" onclick="startGame()" style="background: #ffd700; color: #000; font-size: 18px;">Iniciar Desafio</button>
-            </div>
-
-            <div id="quiz-screen" class="hidden">
-                <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
-                <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-                    <span id="q-count">Questão 1/10</span>
-                    <span class="timer-box">⏱️ <span id="timer">30</span>s</span>
-                </div>
-                <h2 id="question-text" style="text-align: left; margin-bottom: 30px;">Pergunta?</h2>
-                <div id="feedback-msg" class="feedback hidden"></div>
-                <div id="options-box"></div>
-            </div>
-
-            <div id="result-screen" class="hidden">
-                <h1>🏆 Desafio Finalizado!</h1>
-                <p id="final-score" style="text-align: center; font-size: 20px; font-weight: bold;"></p>
-                <h2 id="final-msg" style="margin: 30px 0;"></h2>
-                <button class="btn" onclick="location.reload()">Jogar Novamente</button>
-            </div>
-
+<div class="game-layout">
+    <!-- CADERNO DE RAMANUJAN -->
+    <div class="notebook">
+        <h3>📖 Caderno de Fórmulas</h3>
+        <div id="notebook-content">
+            <p style="text-align: center; color: #888; font-style: italic;">Acerte as questões do quiz para decifrar e anotar os teoremas secretos de Ramanujan aqui...</p>
         </div>
     </div>
 
+    <!-- BOX DO QUIZ PRINCIPAL -->
+    <div class="container" id="quiz-container">
+        <!-- TELA INICIAL -->
+        <div id="screen-intro">
+            <h1>✨ O Despertar de um Gênio: O Enigma de Ramanujan</h1>
+            
+            <div class="intro-visuals">
+                <div class="avatar-container" title="Olá, estudante!">👋🤖</div>
+                <div class="animated-book" title="Livro Mágico de Fórmulas"></div>
+            </div>
+
+            <div class="story-box">
+                <p><strong>A História:</strong> Em 1918, o matemático indiano Srinivasa Ramanujan impressionou seu colega Hardy ao revelar que <strong>1729</strong> é o menor número expresso como a soma de dois cubos de duas formas diferentes (<span style="color:var(--accent)">1³ + 12³ = 9³ + 10³</span>).</p>
+                <p style="margin-top: 8px;"><strong>Como funciona o Quiz:</strong> Você terá 10 desafios de matemática (nível 6º ao 8º ano). As perguntas e alternativas aparecem em <em>ordem totalmente aleatória</em>. Cada questão possui um cronômetro próprio adaptado à dificuldade. Acerte para desbloquear fórmulas reais no caderno ao lado!</p>
+            </div>
+
+            <button class="btn" onclick="startGame()" style="margin-top: 10px; background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%); color: #0a0e1a; font-size: 17px; font-weight: bold;">Iniciar Desafio Matemático</button>
+        </div>
+
+        <!-- TELA DE QUESTÕES -->
+        <div id="screen-quiz" class="hidden">
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progress"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <span id="question-number" style="color: var(--text-secondary); font-weight: bold;">Questão 1/10</span>
+                <div class="timer">⏱️ <span id="time-left">35</span>s</div>
+            </div>
+            <h2 id="question-text" style="color: white; font-size: 18px; margin-bottom: 20px; text-align: left; line-height: 1.4;">Pergunta aqui</h2>
+            
+            <div id="feedback-panel" class="feedback-overlay hidden"></div>
+            <div style="display: flex; flex-direction: column; gap: 10px;" id="options-box"></div>
+        </div>
+
+        <!-- TELA FINAL -->
+        <div id="screen-result" class="hidden">
+            <h1>🏆 Desafio Concluído!</h1>
+            <p id="score-text" style="font-size: 17px; font-weight: bold; text-align: center; margin-top: 15px;"></p>
+            <h2 id="feedback-message" style="margin: 20px 0; font-size: 20px;"></h2>
+            <button class="btn" onclick="restartGame()" style="background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%); color: #0a0e1a;">Jogar Novamente</button>
+        </div>
+    </div>
+</div>
+
 <script>
-    const questionsData = [
-        { q: "Ramanujan resolveu 24 problemas em um dia e 18 no outro. Quantos problemas ao todo?", options: ["40", "42", "44", "46"], correct: 1, time: 30 },
-        { q: "Um livro tem 180 páginas. Lendo 20 páginas por dia, termina em:", options: ["8 dias", "9 dias", "10 dias", "12 dias"], correct: 1, time: 30 },
-        { q: "Qual é o resultado de 6 × 8?", options: ["42", "46", "48", "54"], correct: 2, time: 20 },
-        { q: "Qual é o MMC de 6 e 8?", options: ["12", "18", "24", "48"], correct: 2, time: 40 },
-        { q: "Qual é o resultado de 4²?", options: ["8", "12", "16", "20"], correct: 2, time: 20 },
-        { q: "Ramanujan resolveu 3/5 de 50 exercícios. Quantos ele resolveu?", options: ["20", "25", "30", "35"], correct: 2, time: 40 },
-        { q: "Qual é o resultado da expressão (15 + 9) ÷ 6?", options: ["3", "4", "5", "6"], correct: 1, time: 30 },
-        { q: "Um aluno acertou 75% de 20 questões. Quantas ele acertou?", options: ["12", "15", "16", "18"], correct: 1, time: 40 },
-        { q: "Próximo número da sequência: 5, 10, 20, 40, ...?", options: ["50", "60", "70", "80"], correct: 3, time: 20 },
-        { q: "Qual dos números abaixo é divisível por 9?", options: ["45", "46", "47", "49"], correct: 0, time: 20 }
+    // Perguntas adaptadas para 6º ao 8º ano com tempos proporcionais à dificuldade
+    const originalQuestions = [
+        { q: "Ramanujan resolveu 24 problemas em um dia e 18 no outro. Quantos problemas ele resolveu ao todo?", options: ["40", "42", "44", "46"], correct: 1, time: 30 },
+        { q: "Um livro sobre a vida de Ramanujan tem 180 páginas. Se um aluno ler 20 páginas por dia, terminará o livro em:", options: ["8 dias", "9 dias", "10 dias", "12 dias"], correct: 1, time: 30 },
+        { q: "Qual é o resultado da multiplicação básica: 6 × 8?", options: ["42", "46", "48", "54"], correct: 2, time: 25 },
+        { q: "Qual é o Mínimo Múltiplo Comum (MMC) entre os números 6 e 8?", options: ["12", "18", "24", "48"], correct: 2, time: 45 },
+        { q: "Qual é o valor da potenciação 4²?", options: ["8", "12", "16", "20"], correct: 2, time: 25 },
+        { q: "Ramanujan resolveu 3/5 de um total de 50 exercícios. Quantos exercícios ele conseguiu resolver?", options: ["20", "25", "30", "35"], correct: 2, time: 50 },
+        { q: "Qual é o resultado da expressão numérica: (15 + 9) ÷ 6?", options: ["3", "4", "5", "6"], correct: 1, time: 40 },
+        { q: "Um estudante acertou 75% de uma prova com 20 questões sobre teorias matemáticas. Quantas questões ele acertou?", options: ["12", "15", "16", "18"], correct: 1, time: 45 },
+        { q: "Qual é o próximo número da sequência lógica: 5, 10, 20, 40, ...?", options: ["50", "60", "70", "80"], correct: 3, time: 30 },
+        { q: "Qual dos números abaixo é estritamente divisível por 9?", options: ["45", "46", "47", "49"], correct: 0, time: 35 }
     ];
 
-    const theorems = [
-        "✨ 1729 = 1³ + 12³ = 9³ + 10³\n(O Número de Ramanujan)",
-        "✨ 1 + 2 + 3 + 4 + ... = -1/12\n(Soma de Ramanujan)",
-        "✨ Identidade Modular:\npi ≈ (9² + 19²/22)^(1/4)",
-        "✨ Teorema de Partição:\np(5n + 4) é múltiplo de 5",
-        "✨ Constante de Landau-Ramanujan:\nRelacionada a somas de quadrados",
-        "✨ Função Teta de Ramanujan:\nUsada na Teoria das Cordas",
-        "✨ Fração Contínua de Rogers-Ramanujan",
-        "✨ Equação Modular de Grau 3",
-        "✨ Número de Táxi Ta(3):\n87539319",
-        "✨ Mente Brilhante: Você decifrou o mestre!"
+    const ramanujanFormulas = [
+        "✨ Descoberto: 1729 = 1³ + 12³ = 9³ + 10³ (O menor número de Táxi!)",
+        "✨ Identidade de Ramanujan:\n1 + 2 + 3 + 4 + ... = -1/12",
+        "✨ Série Infinita para π:\n(2√2 / 9801) * ∑ (4k)!(1103+26390k) / (k!)^4",
+        "✨ Fração Contínua Mágica:\n1 / (1 + e^(-2π) / (1 + e^(-4π) / ... ))",
+        "✨ Teorema de Partição:\np(5n + 4) é sempre divisível por 5.",
+        "✨ Função Teta de Ramanujan:\nf(a, b) = ∑ a^(n(n+1)/2) * b^(n(n-1)/2)",
+        "✨ Número de Hardy-Ramanujan:\nTa(3) = 87539319 = 167³ + 436³",
+        "✨ Aproximação geométrica:\nπ ≈ 22/7",
+        "✨ Identidade de Rogers-Ramanujan:\nG(q) = ∑ q^(n²) / (q;q)_n",
+        "✨ Mente Brilhante: Você decifrou todos os teoremas do caderno!"
     ];
 
-    let currentQ = 0;
+    let questions = [];
+    let currentQuestionIndex = 0;
     let score = 0;
-    let timerInterval;
-    let timeLeft;
-    let unlockedTheorems = 0;
+    let timer;
+    let timeLeft = 30;
+    let currentShuffledOptions = [];
+    let currentCorrectIndex = -1;
 
-    // Fundo Dinâmico
-    const symbols = ['1729', 'π', '∑', '∫', 'x²', '∞', 'Ta(n)'];
-    const bg = document.getElementById('math-bg');
-    for(let i=0; i<15; i++) {
-        let div = document.createElement('div');
-        div.className = 'math-element';
-        div.innerText = symbols[Math.floor(Math.random() * symbols.length)];
-        div.style.left = Math.random() * 100 + 'vw';
-        div.style.animationDelay = Math.random() * 15 + 's';
-        bg.appendChild(div);
+    // Fundo flutuante de símbolos
+    const mathSymbols = ['1729', 'x²', '√y', '∫', 'π', 'Ta(2)', '1³+12³', '∑', '∞', '9³+10³'];
+    const bgContainer = document.getElementById('math-bg');
+    for (let i = 0; i < 12; i++) {
+        let el = document.createElement('div');
+        el.className = 'math-element';
+        el.innerText = mathSymbols[Math.floor(Math.random() * mathSymbols.length)];
+        el.style.left = Math.random() * 100 + 'vw';
+        el.style.animationDelay = Math.random() * 12 + 's';
+        bgContainer.appendChild(el);
+    }
+
+    // Aleatorização das perguntas
+    function shuffleQuestions() {
+        questions = [...originalQuestions];
+        for (let i = questions.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [questions[i], questions[j]] = [questions[j], questions[i]];
+        }
     }
 
     function startGame() {
-        document.getElementById('intro-screen').classList.add('hidden');
-        document.getElementById('quiz-screen').classList.remove('hidden');
-        loadQuestion();
+        shuffleQuestions(); 
+        currentQuestionIndex = 0;
+        score = 0;
+        document.getElementById('notebook-content').innerHTML = '';
+        document.getElementById('screen-intro').classList.add('hidden');
+        document.getElementById('screen-quiz').classList.remove('hidden');
+        showQuestion();
     }
 
-    function loadQuestion() {
-        clearInterval(timerInterval);
-        const data = questionsData[currentQ];
-        timeLeft = data.time;
+    function showQuestion() {
+        clearInterval(timer);
+        let currentQuestion = questions[currentQuestionIndex];
+        timeLeft = currentQuestion.time;
+        document.getElementById('time-left').innerText = timeLeft;
+        document.getElementById('feedback-panel').classList.add('hidden');
         
-        document.getElementById('timer').innerText = timeLeft;
-        document.getElementById('q-count').innerText = `Questão ${currentQ + 1}/10`;
-        document.getElementById('question-text').innerText = data.q;
-        document.getElementById('progress').style.width = (currentQ / 10) * 100 + '%';
-        document.getElementById('feedback-msg').classList.add('hidden');
+        let progWidth = (currentQuestionIndex / questions.length) * 100;
+        document.getElementById('progress').style.width = progWidth + '%';
 
-        // Aleatorizar opções
-        let opts = data.options.map((o, i) => ({ text: o, correct: i === data.correct }));
-        opts.sort(() => Math.random() - 0.5);
+        timer = setInterval(() => {
+            timeLeft--;
+            document.getElementById('time-left').innerText = timeLeft;
+            if (timeLeft <= 0) { checkAnswer(-1); }
+        }, 1000);
 
-        const box = document.getElementById('options-box');
-        box.innerHTML = '';
-        opts.forEach(opt => {
-            const b = document.createElement('button');
-            b.className = 'btn option-btn';
-            b.innerText = opt.text;
-            b.onclick = () => handleAnswer(opt.correct, opt.text);
-            box.appendChild(b);
+        document.getElementById('question-number').innerText = `Questão ${currentQuestionIndex + 1}/${questions.length}`;
+        document.getElementById('question-text').innerText = currentQuestion.q;
+
+        // Aleatorização das alternativas
+        let originalOptions = currentQuestion.options;
+        let correctAnswerText = originalOptions[currentQuestion.correct];
+        currentShuffledOptions = [...originalOptions];
+        for (let i = currentShuffledOptions.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [currentShuffledOptions[i], currentShuffledOptions[j]] = [currentShuffledOptions[j], currentShuffledOptions[i]];
+        }
+        currentCorrectIndex = currentShuffledOptions.indexOf(correctAnswerText);
+
+        let optionsBox = document.getElementById('options-box');
+        optionsBox.innerHTML = '';
+        currentShuffledOptions.forEach((option, index) => {
+            let button = document.createElement('button');
+            button.className = 'btn option-btn';
+            button.innerText = option;
+            button.id = 'opt-' + index;
+            button.onclick = () => checkAnswer(index);
+            optionsBox.appendChild(button);
+        });
+    }
+
+    function checkAnswer(selectedIndex) {
+        clearInterval(timer);
+        currentShuffledOptions.forEach((_, index) => {
+            let btn = document.getElementById('opt-' + index);
+            if(btn) btn.disabled = true;
         });
 
-        timerInterval = setInterval(() => {
-            timeLeft--;
-            document.getElementById('timer').innerText = timeLeft;
-            if(timeLeft <= 0) handleAnswer(false, "Tempo esgotado");
-        }, 1000);
-    }
+        let isCorrect = selectedIndex === currentCorrectIndex;
+        let feedbackPanel = document.getElementById('feedback-panel');
+        let quizContainer = document.getElementById('quiz-container');
+        feedbackPanel.classList.remove('hidden');
 
-    function handleAnswer(isCorrect, text) {
-        clearInterval(timerInterval);
-        const container = document.getElementById('quiz-container');
-        const feedback = document.getElementById('feedback-msg');
-        
-        // Bloquear botões
-        Array.from(document.getElementsByClassName('option-btn')).forEach(b => b.disabled = true);
+        if (isCorrect) {
+            let notebook = document.getElementById('notebook-content');
+            if(score === 0 && notebook.innerText.includes("Acerte as questões")) { notebook.innerHTML = ''; }
+            
+            let entry = document.createElement('div');
+            entry.className = 'formula-entry';
+            entry.innerText = ramanujanFormulas[score] || "✨ Teorema Desbloqueado!";
+            notebook.appendChild(entry);
+            notebook.scrollTop = notebook.scrollHeight;
 
-        feedback.classList.remove('hidden');
-        if(isCorrect) {
             score++;
-            feedback.innerText = "✨ Correto!";
-            feedback.className = "feedback correct";
-            unlockTheorem();
+            feedbackPanel.innerText = "✨ Correto! Teorema anotado no caderno!";
+            feedbackPanel.className = "feedback-overlay correct-msg";
         } else {
-            container.classList.add('shake');
-            setTimeout(() => container.classList.remove('shake'), 400);
-            feedback.innerText = "❌ Incorreto!";
-            feedback.className = "feedback wrong";
+            quizContainer.classList.add('shake');
+            setTimeout(() => quizContainer.classList.remove('shake'), 400);
+
+            let msg = selectedIndex === -1 ? "⏱️ O tempo acabou!" : "❌ Incorreto!";
+            feedbackPanel.innerText = msg + ` Resposta certa: ${currentShuffledOptions[currentCorrectIndex]}`;
+            feedbackPanel.className = "feedback-overlay wrong-msg";
         }
 
-        setTimeout(() => {
-            currentQ++;
-            if(currentQ < 10) loadQuestion();
-            else showResult();
-        }, 1500);
+        setTimeout(() => { nextQuestion(); }, 2500);
     }
 
-    function unlockTheorem() {
-        const placeholder = document.getElementById('placeholder');
-        if(placeholder) placeholder.remove();
-        
-        const content = document.getElementById('notebook-content');
-        const entry = document.createElement('div');
-        entry.className = 'formula-entry';
-        entry.innerText = theorems[unlockedTheorems] || "✨ Teorema Desbloqueado!";
-        content.prepend(entry); // Adiciona no topo
-        unlockedTheorems++;
+    function nextQuestion() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < questions.length) { showQuestion(); } else { showResult(); }
     }
 
     function showResult() {
-        document.getElementById('quiz-screen').classList.add('hidden');
-        document.getElementById('result-screen').classList.remove('hidden');
-        document.getElementById('final-score').innerText = `Você acertou ${score} de 10 questões.`;
-        
-        const msg = document.getElementById('final-msg');
-        if(score >= 7) { msg.innerText = "Incrível! Ramanujan ficaria orgulhoso! 🌟"; msg.style.color = "#4ade80"; }
-        else if(score >= 4) { msg.innerText = "Muito bom! Você tem um ótimo raciocínio! 📚"; msg.style.color = "#ffd700"; }
-        else { msg.innerText = "Continue praticando, a matemática é uma arte! 📐"; msg.style.color = "#f87171"; }
+        document.getElementById('progress').style.width = '100%';
+        document.getElementById('screen-quiz').classList.add('hidden');
+        document.getElementById('screen-result').classList.remove('hidden');
+        let percentage = Math.round((score / questions.length) * 100);
+        document.getElementById('score-text').innerText = `Você acertou ${score} de ${questions.length} questões (${percentage}%).`;
+
+        let feedback = document.getElementById('feedback-message');
+        if (percentage >= 70) {
+            feedback.innerText = "Excelente! Você tem a mente matemática de Ramanujan! 🧠✨";
+            feedback.style.color = "#4ade80";
+        } else if (percentage >= 40) {
+            feedback.innerText = "Bom trabalho! Continue preenchendo o caderno! 📊";
+            feedback.style.color = "#ffd700";
+        } else {
+            feedback.innerText = "Não desista! Tente novamente para reescrever as fórmulas! 📐";
+            feedback.style.color = "#f87171";
+        }
+    }
+
+    function restartGame() {
+        document.getElementById('screen-result').classList.add('hidden');
+        document.getElementById('screen-intro').classList.remove('hidden');
     }
 </script>
 </body>
-</html>
-
+    </html>
+    
